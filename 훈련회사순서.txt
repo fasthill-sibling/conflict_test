@@ -1,0 +1,19 @@
+20230621. sec  -> negative try중
+20230622. naver, hyunmotor, kakao
+
+jupyter notebook working.
+https://towardsdatascience.com/keep-jupyter-notebook-running-even-after-browser-is-closed-9a1937b7c615
+
+buy 확률을 높이기 위하여 0.5% 상승과 비교: false가 나와도 위험부담 저감. 
+train 날짜를 줄여가면서 가장 높은 결과를 보이는 date term을 확인.
+
+시계열 분석 평가
+https://medium.com/daria-blog/machine-learning-for-time-series-forecasting-part-1-6e97661c9773
+
+1. .best_score_, model.score는 scoring에서 지정한 정확도, 정밀도에 대한 값인가?
+2. scoring='precision'으로 지정했을 때, .best_score_, , model.score와 metrics.precison_score가 왜 다른가?
+
+model.score = R2, 결정계수 in regression
+model.score  = model.accuracy_score() in classification
+
+best_score_ 가 model.score 보다 높으면 overfitting로 판단되므로 cv를 크게하여 underfitting방향으로 수정.??? 아님.

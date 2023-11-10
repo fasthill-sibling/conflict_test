@@ -1,0 +1,119 @@
+1. get_common_data_since_last_update_to_pickle.ipynb 실행하기 (./)
+  - 공통으로 사용되는 매일 변동되는 지표 모음
+1.1 get_common_data_since_last_update_to_pickle.ipynb 실행하기 : 
+  - 추가 회사 자료 추출용으로 임시로 진행
+
+2. get_company_daily_price_since_last_update_to_pickle 실행하기 (./)
+  - 회사별로 매일 주가 변동항목, 투자자별 매수매도 매일 현황
+
+3. pricechange_4class 실행하기 (./categorise)
+  - 회사별 매일 최고가, 최저가 발생 시간 분류
+  - 4번 자료에서 취득한 데이터를 이용. 데이터가 없으면  계산 결과를 0으로 처리하여 진행
+
+4. get_daily_historical_price_to_pickle (./)
+  - 회사별 매일 10분간격 주가 변동 추이 현황
+  - 10분 가격 자료가 없는 회사는 3번 과정 스킵
+  - ***_4class.ipynb 실행 필요 없어짐. 추후 시간대별 분석이 필요시 추가필요
+
+5. combine_features 실행하기 (./categorise)
+  - 1, 2 결합, weekday 추가, 전날 대비 최종가 변동 분류(0.5%, 1% 기준, close_cr), 
+     시작가 대비 최고가 변동 분류(0.5%, 1% 기준, r_open_high)
+  - data cleaning
+  - 
+6. select_best_fit_features 실행하기 (./machine_learning)
+  - LogisticRegression 실행하기
+    . coef_ 기준 주요인자 선별하기 (min 영향 feature 하나씩 제거)
+  - 선별된 feature를 이용하여 SGDClassifier 이용하여 정확도 1차 계산하기
+
+  - 위 내용 재검토.
+    . 결정트리로 fearure_importance 선정하여 진행검토
+
+  - 인공신경망을 이용하여 정확도 계산하기
+  - 정밀도, 재현율, f1-score, confusion matrix 확인하기 (정밀도가 최우선)
+
+7. increase_accuracy_종목이름
+  - 5번을 통하여 정확도, 정밀도가 높은 선택된 종목을 개별로 정확도 향상을 위한 분석
+  
+8. ml-testing
+- testing하기
+
+low_close ratio.ipynb: 일중 종가/저가의 상승비율에 따른 발생 빈도
+
+
+*** 1년 데이터 결과가 최근 6개월 데이터보다 월등히 정확도가 떨어짐. 최근 6개월로 한정하여 적용해야 하나?
+    지속적 분석 필요
+*** +, 0.5%, 1% 1.5%, 2% 상승분으로만 target으로 남기고 분석. 
+
+최근 1개월치를 test data로 검증.
+결정트리로 fearure_importance  확인
+
+find_accuracy_6months.ipynb로 6개월 단위 분석함.
+
+앙상블로 분석해 보기, 일주일 단위로 분석해 보기.
+
+lightgbm 적용 좋음. gridsearchcv, cv=stratified 확인, .feature_importance_ 확인
+결과를 dataframe으로 구성하여 한 눈에 볼 수 있도록.(최적parameter에 따른 정확도 추이 분석용)
+
+-3일까지 기초자료 보강하기. 마이너스feature 영향.
+gridsearchcv를 for loop. 10번 이상이면 stop. 혹은 발산 몇 번이상이면 stop등 추가 필요. 이후 최적 로직 만들어서 최소 반복 방법 만들어서 진행
+
+max_depth = [1,2,3,4,5],
+njm_leaves = [3,4,5,6,7],
+learning_rate = [0.03, 0.05, 0.1, 0.2, 0.3]
+colsample_bytree = [0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+subsample = [0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+n_estimator =[5, 10, 15, 20]
+num_class = [1]
+
+
+combine_features-2days_expand.ipynb에서 common 지표 -2일자 계산하여 집어넣기
+
+
+current date, previous date 로직 간단히 수정해야 함. (combine_features-2days_expand.ipynb 에서)
+
+lightgbm 젹정한 column수만으로도 precision 올릴 수 있음. (여러번 try  해 봐야 함.)
+
+dict to csv, list to csv sub 만들어야 함.
+
+****** yahoo에서 받는 자료의 날짜 일치 부분 확인해야 함. ******
+
+4월 8일부터 volume을 거래량을 바꾸어 실시. 
+(아직 미 수행(4/18일 현재), yahoo에서 받은 자료을 이용
+ - volume으로 하기 위하여는 기존의 자료를 처음부터 추출하는 것보다는 
+   총거래금액/종가를 계산하여 거래량을 추정하여 기입하는 것이 현실적. 값의 차이가 크지 않음.
+- 전체적으로 바꾸어 놓고 vol로 추출하여 사용하면 됨.
+
+wonderware edrawmax 설치후 flowchart 진행
+
+predict전에 4(compnay update),5(common data 취득),6 (common combine)실행
+ml_testing/predict_v0.ipynb 로 실제 데이터 분석지행
+
+문장에 hyperparameter 수정하는 단계를 작성하도록.. 누적해서.
+
+_future는 실시간 분석으로.. 분석자료에서는 제외하는 것이 맞을 듯함. 실시간으로 변하는 수치임.
+-- bond 10년치도 포함하여 분석해야 함. 
+
+5PM 선물 종가 edt time -13시간.
+
+https://smha-61749.medium.com/pytorch-%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D-%EB%94%A5%EB%9F%AC%EB%8B%9D-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%84%A4%EA%B3%84%ED%95%98%EA%B3%A0-%ED%85%9C%ED%94%8C%EB%A6%BF-%EA%B5%AC%EC%84%B1%ED%95%98%EA%B8%B0-ccf222552e63
+------
+----2023/05/11--
+0. n-iter 늘리기. 50, 100, 150, 후 줄이기 20, 10 등으로
+0. n-estimator 줄이기 5000 -> 3000
+1. 규제 줄이기: 4 - 2로
+2. 0-1 반복하기
+
+
+해당일 9시 전이면 이전일까지 취득. 해당일은 16시 이후 취득.
+
+pytest 강좌
+https://www.youtube.com/watch?v=J0dslY7QSi4
+
+https://testautomationu.applitools.com. kangeuncolab. test automation university.
+
+PRECISION  std와 accuracy std는 다른가? precison은 높아야 하고, std는 낮아야 함.
+
+네이버 진행중. 최적의 parameter 저장 필요.(params-space, params cv등), column 포함 한파일에 
+
+### ixf, qnet 파일 추가후 훈련시켜야 함. (5_calculate_....ipynb)
+ . 2023년 6월 16일에 4_get_common_data_futures에 새롭게 추가시켜 놓음
