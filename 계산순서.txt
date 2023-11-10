@@ -102,18 +102,3 @@ https://smha-61749.medium.com/pytorch-%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D-%EB%9
 0. n-estimator 줄이기 5000 -> 3000
 1. 규제 줄이기: 4 - 2로
 2. 0-1 반복하기
-
-
-해당일 9시 전이면 이전일까지 취득. 해당일은 16시 이후 취득.
-
-pytest 강좌
-https://www.youtube.com/watch?v=J0dslY7QSi4
-
-https://testautomationu.applitools.com. kangeuncolab. test automation university.
-
-PRECISION  std와 accuracy std는 다른가? precison은 높아야 하고, std는 낮아야 함.
-
-네이버 진행중. 최적의 parameter 저장 필요.(params-space, params cv등), column 포함 한파일에 
-
-### ixf, qnet 파일 추가후 훈련시켜야 함. (5_calculate_....ipynb)
- . 2023년 6월 16일에 4_get_common_data_futures에 새롭게 추가시켜 놓음
